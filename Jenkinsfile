@@ -6,7 +6,7 @@ pipeline{
     stages{
         stage("Build Docker Image"){
             steps{
-                sh "docker build -t gagangiri94/wp-image:${DOCKER_TAG}"
+                sh "docker build . -t gagangiri94/wp-image:${DOCKER_TAG}"
             }
         }
     }
