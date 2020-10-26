@@ -20,7 +20,7 @@ pipeline{
         }
         stage('Deploy to kubernetes'){
             steps{
-                kubernetesDeploy configs: 'wordpress-deployment.yaml', kubeconfigId: 'k8s-kubeconfig'
+                kubernetesDeploy configs: 'wordpress-deployment.yaml', kubeconfigId: 'k8s-config'
             }
         }
     }
