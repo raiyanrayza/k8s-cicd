@@ -20,9 +20,7 @@ pipeline{
         }
         stage('Deploy to kubernetes'){
             steps{
-                withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://B8889935E09181A8D38D6FEB0BE84410.yl4.us-west-1.eks.amazonaws.com']) {
-                    sh "kubectl apply -k ./ --namespace=24-wp"
-                }
+                kubernetesDeploy configs: 'wordpress-deployment.yaml', kubeConfig: [path: ''], kubeconfigId: 'k8s-kubeconfig', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://B8889935E09181A8D38D6FEB0BE84410.yl4.us-west-1.eks.amazonaws.com']
             }
         }
     }
