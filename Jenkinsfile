@@ -13,7 +13,8 @@ pipeline{
     }
 }
 
-def getDockertag(){
-    def tag = sh script: 'git rev-parse HEAD', returnStdout: true
-    return tag
-}
+// to use commit id in docker image version
+// def getDockertag(){
+//     def tag = sh script: 'git rev-parse HEAD', returnStdout: true
+//     return tag
+// }
