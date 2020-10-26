@@ -11,9 +11,11 @@ pipeline{
             }
         }
         stage('Dockerhub push'){
-            withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_pass')]) {
-                sh "docker login -u gagangiri94 -p ${docker_pass}"
-                sh "docker push gagangiri94/wp-image:${DOCKER_TAG}"
+            steps{
+                withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_pass')]) {
+                    sh "docker login -u gagangiri94 -p ${docker_pass}"
+                    sh "docker push gagangiri94/wp-image:${DOCKER_TAG}"
+                }
             }
         }
     }
