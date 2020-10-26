@@ -1,0 +1,87 @@
+=== Change Log ===
+= 4.7.1 =
+1. Fixed Image limking issue without lightbox.
+
+= 4.7 =
+
+1. Added multifilter "And" Logic.
+
+= 4.6 =
+1. Default filter selection option added
+
+= 4.5 =
+1.Post exclude by Tag and Category function added.
+
+
+= 4.4 =
+1. Date link bug fixed.
+2. loader color attached with buttons color
+
+= 4.3 =
+1. Added Filter order settings.
+2. Added Post filtering by tags.
+3. Added Multi filter option.
+4. Added Template 3.
+ 
+
+= 4.2 =
+1. Description word setting is now changed in character setting.
+
+= 4.1 =
+1. Blury bug fixed.
+
+= 4.0 =
+
+1. Page linking bug fixed. 
+
+= 3.9 =
+1. Added settings page link on plugins page.
+
+= 3.8 =
+1. Added template direction option.
+2. Added multifilter in same time option.
+3. Added "all" buttone option
+4. Tested With 5.1.1
+
+= 3.7 =
+1. Compatible with page builder.
+2. Tested With 5.0.3 
+
+= 3.6 =
+1. Added image Quality Settings
+2. Removed CSS conflict of Column and Anchor tag.
+3. Tested With 5.0.3 
+
+----------------------------
+
+= 3.5 =
+1. Compatible with elemantor plugin
+
+----------------------------
+
+= 3.4 =
+1. Added Bootstrap.css.map file
+
+----------------------------
+
+= 3.3 =
+1. Date Link Bugs Fixed
+2. Tested With 4.9.8 
+
+----------------------------
+
+= 3.2 =
+1. Added Order Settings
+2. Added Search Feature
+3. Tested With 4.9.8 
+
+----------------------------
+
+= 3.1 =
+1. Added template 2
+2. Fixed Many Css bugs
+3. loding Icon bug fixed
+4. Tested With 4.9.7 
+
+----------------------------
+
