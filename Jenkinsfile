@@ -18,6 +18,13 @@ pipeline{
                 }
             }
         }
+        stage('Deploy to kubernetes'){
+            steps{
+                withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://B8889935E09181A8D38D6FEB0BE84410.yl4.us-west-1.eks.amazonaws.com']) {
+                    sh "kubectl apply -k ./ --namespace=24-wp"
+                }
+            }
+        }
     }
 }
 
@@ -26,3 +33,4 @@ pipeline{
 //     def tag = sh script: 'git rev-parse HEAD', returnStdout: true
 //     return tag
 // }
+
