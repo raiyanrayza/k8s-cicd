@@ -41,3 +41,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: jenkins
+  namespace: 24-wp
