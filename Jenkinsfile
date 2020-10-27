@@ -18,6 +18,17 @@ pipeline{
                 }
             }
         }
+       
+        stage('Update image verion in wordpress deployment file'){
+            steps{
+                sh "sed -i "s/tag/${DOCKER_TAG}/g" wordpress-deployment.yaml"
+                sh "echo wordpress-deployment.yaml"
+
+            }
+        }
+
+
+
         stage('Deploy to kubernetes'){
             steps{
                 kubernetesDeploy configs: 'wordpress-deployment.yaml', kubeconfigId: 'k8s-config'
