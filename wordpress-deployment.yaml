@@ -50,7 +50,7 @@ spec:
       maxSurge: 100%
       maxUnavailable: 50%
     type: RollingUpdate
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: wordpress
