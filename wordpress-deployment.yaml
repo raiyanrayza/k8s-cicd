@@ -63,7 +63,7 @@ spec:
 
 
       containers:
-      - image: gagangiri94/wp-image:tag
+      - image: gagangiri94/wp-image:1.0.0
         name: wordpress      
         env:
         - name: WORDPRESS_DB_HOST
