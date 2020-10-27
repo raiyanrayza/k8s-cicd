@@ -21,7 +21,7 @@ pipeline{
        
         stage('Update image verion in wordpress deployment file'){
             steps{
-                sh "sed -i "s/tag/${DOCKER_TAG}/g" wordpress-deployment.yaml"
+                sh "sed -i 's/tag/${DOCKER_TAG}/g' wordpress-deployment.yaml"
                 sh "echo wordpress-deployment.yaml"
 
             }
