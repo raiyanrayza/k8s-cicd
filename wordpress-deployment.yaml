@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wordpress
+  namespace: 24-wp
   labels:
     app: wordpress
 spec:
@@ -16,6 +17,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: wp-pv-claim
+  namespace: 24-wp
   labels:
     app: wordpress
 spec:
@@ -29,6 +31,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress
+  namespace: 24-wp
   labels:
     app: wordpress
 spec:
@@ -44,9 +47,10 @@ spec:
       tier: frontend
   template:
     metadata:
+      namespace: 24-wp
       labels:
         app: wordpress
-        tier: frontend
+        tier: frontend  
     spec:
       initContainers:
       - image: busybox
