@@ -1,0 +1,63 @@
+.basicsGoalProgress {
+	border: solid 1px #e7e7e7;
+	display: inline-block;
+	width: 96%;
+	background: #fafafa;
+	padding: 15px;
+	border-radius: 4px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+#t_payment_table thead th, #t_payment_table thead td {
+    color: #fff;
+    background-color: #3cc88f;
+    letter-spacing: 0.7px;
+}
+div#t_payment_table_filter {
+    margin-bottom: 15px;
+}
+.basicsGoalProgress-amountTowardsGoal {
+	float: left;
+	width: 100%;
+	margin-bottom: 10px;
+}
+.basicsGoalProgress-progressDetails {
+	float: left;
+	width: 100%;
+	margin-top: 10px;
+}
+.basicsGoalProgress-amountSold,
+.basicsGoalProgress-progressDetails-detailsGoal-goalPercentageOrInitiallyRaised {
+	font-weight: 600;
+	color: #3cc88f;
+}
+.basicsGoalProgress-raisedCurrency {
+	font-weight: 400;
+}
+.basicsGoalProgress-claimedOrBackers,
+.basicsGoalProgress-progressDetails-detailsGoal-goalPopover {
+	font-weight: 600;
+}
+.basicsGoalProgress-progressDetails-detailsTimeLeft {
+	font-weight: 600;
+	color: red;
+}
+.campaignFundingBar {
+	overflow: hidden;
+}
+ .properties_load_more {
+	width: 100%;
+	float: left;
+	text-align: center;
+}
+
+.campaignFundingBar {
+    width: 100%;
+    float: left;
+    border: 1px solid #ccc!important;
+}
+.campaignFundingBar-progress {
+    height: 24px;
+    color: #000!important;
+    background-color: green !important;
+}

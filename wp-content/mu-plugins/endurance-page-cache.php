@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Endurance Page Cache
  * Description: This cache plugin is primarily for cache purging of the additional layers of cache that may be available on your hosting account.
- * Version: 2.0
+ * Version: 2.0.5
  * Author: Mike Hansen
  * Author URI: https://www.mikehansen.me/
  * License: GPLv2 or later
@@ -11,23 +11,23 @@
  * @package EndurancePageCache
  */
 
- /**
-  * Endurance Page Cache is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
-  *
-  * Endurance Page Cache is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-  * You should have received a copy of the GNU General Public License along with Endurance Page Cache; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-  * 
-  * @license GPL-v2-or-later
-  * @link https://github.com/bluehost/endurance-page-cache/LICENSE
-  * (If this plugin was installed as a single file, a copy of the license is available in the distribution repository in the link above)
-  */
+/**
+ * Endurance Page Cache is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+ *
+ * Endurance Page Cache is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with Endurance Page Cache; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ * @license GPL-v2-or-later
+ * @link https://github.com/bluehost/endurance-page-cache/LICENSE
+ * (If this plugin was installed as a single file, a copy of the license is available in the distribution repository in the link above)
+ */
 
 // Do not access file directly!
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'EPC_VERSION', 2.0 );
+define( 'EPC_VERSION', '2.0.5' );
 
 if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 
@@ -58,11 +58,25 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 		public $cache_level = 2;
 
 		/**
+		 * Cloudflare enabled
+		 *
+		 * @var bool
+		 */
+		public $cloudflare_enabled = false;
+
+		/**
+		 * Cloudflare tier
+		 *
+		 * @var string
+		 */
+		public $cloudflare_tier = 'basic';
+
+		/**
 		 * Brands supporting cloudflare (from mm_brand option).
 		 *
 		 * @var array
 		 */
-		public $cloudflare_support = array( 'BlueHost', 'HostMonster', 'Just_Host' );
+		public $cloudflare_support = array( 'BlueHost' );
 
 		/**
 		 * Whether or not to force a purge.
@@ -86,14 +100,21 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 		public $should_update_throttled_items = false;
 
 		/**
+		 * Record keeping for which triggers have fired
+		 *
+		 * @var array
+		 */
+		public $triggers = array();
+
+		/**
 		 * UDEV Purge Buffer
-		 * 
+		 *
 		 * This parameter determines whether to hit the UDEV Cache Purge API.
-		 * 
+		 *
 		 * Set to false, no request is made.
 		 * Set to true or an empty array all cached resources are purged.
 		 * Set to array of relative paths to purge specified resources only.
-		 * 
+		 *
 		 * @var boolean|array
 		 */
 		protected $udev_purge_buffer = false;
@@ -121,14 +142,17 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 
 		/**
 		 * UDEV Cache Purge API services.
-		 * 
+		 *
 		 * PARAMETERS:
 		 * 'cf'  => 1|0 (default 1)
 		 * 'epc' => 1|0 (default 0)
-		 * 
+		 *
 		 * @var array
 		 */
-		protected static $udev_api_services = array( 'cf' => 1, 'epc' => 0 );
+		public $udev_api_services = array(
+			'cf'  => 1,
+			'epc' => 0,
+		);
 
 		/**
 		 * Endurance_Page_Cache constructor.
@@ -144,6 +168,12 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 			$this->cache_level = get_option( 'endurance_cache_level', 2 );
 			$this->cache_dir   = WP_CONTENT_DIR . '/endurance-page-cache';
 
+			$cloudflare_state = get_option( 'endurance_cloudflare_enabled', false );
+
+			$this->cloudflare_enabled      = (bool) $cloudflare_state;
+			$this->cloudflare_tier         = ( is_numeric( $cloudflare_state ) && $cloudflare_state ) ? 'basic' : $cloudflare_state;
+			$this->udev_api_services['cf'] = $this->cloudflare_tier;
+
 			array_push( $this->cache_exempt, rest_get_url_prefix() );
 
 			$this->hooks();
@@ -153,6 +183,7 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 		 * Retrieves the cache level from the database
 		 *
 		 * If cache level is set higher than 3, then it will reset it down to level 3
+		 *
 		 * @return int
 		 */
 		public function get_cache_level() {
@@ -453,7 +484,7 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 				}
 			}
 
-			$this->purge_trigger = 'option_update_' . $option;
+			$this->add_trigger( 'option_update_' . $option );
 			$this->purge_all();
 
 			return true;
@@ -612,11 +643,15 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 		}
 
 		/**
-		 * Make a request to purge the entire CDN
+		 * Make a request to purge the entire Sitelock CDN
 		 */
 		public function purge_cdn() {
 
-			if ( ! $this->force_purge && true === $this->should_throttle( 'cdn', __METHOD__ ) ) {
+			if ( ! $this->force_purge && true === $this->should_throttle( 'sitelock_cdn', __METHOD__ ) ) {
+				return;
+			}
+
+			if ( true === $this->cloudflare_enabled ) {
 				return;
 			}
 
@@ -717,7 +752,7 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 		 */
 		public function shutdown() {
 			if ( $this->should_update_throttled_items ) {
-				$throttled = [];
+				$throttled = array();
 				foreach ( $this->throttled as $type => $group ) {
 					$throttled[ $type ] = array_filter( $group, array( $this, 'is_timestamp_valid' ) );
 				}
@@ -751,7 +786,9 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 
 			$domain = wp_parse_url( home_url(), PHP_URL_HOST );
 
-			$trigger = ( isset( $this->purge_trigger ) && ! is_null( $this->purge_trigger ) ) ? $this->purge_trigger : current_action();
+			if ( empty( $this->triggers ) ) {
+				$this->add_trigger( current_action() );
+			}
 
 			$args = array(
 				'method'     => 'PURGE',
@@ -761,7 +798,7 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 				'headers'    => array(
 					'host' => $domain,
 				),
-				'user-agent' => 'WordPress/' . $wp_version . '; ' . home_url() . '; EPC/v' . EPC_VERSION . '/' . $trigger,
+				'user-agent' => 'WordPress/' . $wp_version . '; ' . home_url() . '; EPC/v' . EPC_VERSION . '/' . $this->get_trigger(),
 			);
 			wp_remote_request( $this->get_purge_request_url( $uri, 'http' ), $args );
 			wp_remote_request( $this->get_purge_request_url( $uri, 'https' ), $args );
@@ -1005,9 +1042,14 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 		 * @return string
 		 */
 		public function htaccess_contents_rewrites( $rules ) {
-			if ( false === is_numeric( $this->cache_level ) || $this->cache_level > 3 ) {
+			if ( false === is_numeric( $this->cache_level ) ) {
 				$this->cache_level = 2;
 			}
+
+			if ( $this->cache_level > 3 ) {
+				$this->cache_level = 3;
+			}
+
 			$base      = wp_parse_url( trailingslashit( get_option( 'home' ) ), PHP_URL_PATH );
 			$cache_url = $base . str_replace( get_option( 'home' ), '', WP_CONTENT_URL . '/endurance-page-cache' );
 			$cache_url = str_replace( '//', '/', $cache_url );
@@ -1162,10 +1204,10 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 			if ( ( isset( $_GET['epc_purge_all'] ) || isset( $_GET['epc_purge_single'] ) ) && is_user_logged_in() && current_user_can( 'manage_options' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->force_purge = true;
 				if ( isset( $_GET['epc_purge_all'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-					$this->purge_trigger = 'toolbar_manual_all';
+					$this->add_trigger( 'toolbar_manual_all' );
 					$this->purge_all();
 				} else {
-					$this->purge_trigger = 'toolbar_manual_single';
+					$this->add_trigger( 'toolbar_manual_single' );
 					$this->purge_single( $this->get_current_single_purge_url() );
 				}
 				header( 'Location: ' . remove_query_arg( array( 'epc_purge_single', 'epc_purge_all' ) ) );
@@ -1329,9 +1371,8 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 				if ( ! is_dir( $path . '.cpanel/proxy_conf' ) ) {
 					mkdir( $path . '.cpanel/proxy_conf' );
 				}
-				$cf_enabled = (bool) get_option( 'endurance_cloudflare_enabled', false );
 
-				if ( $cf_enabled === true ) {
+				if ( true === $this->cloudflare_enabled ) {
 					$new_value = '-1';
 				}
 				@file_put_contents( $path . '.cpanel/proxy_conf/' . $domain, 'cache_level=' . $new_value ); // phpcs:ignore WordPress.WP.AlternativeFunctions, WordPress.PHP.NoSilencedErrors
@@ -1368,7 +1409,7 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 					if ( isset( $info['constant'] ) && defined( $info['constant'] ) ) {
 						if ( version_compare( $info['version'], constant( $info['constant'] ), '>' ) ) {
 							$file = wp_remote_get( $info['source'] );
-							if ( ! is_wp_error( $file ) && isset( $file['body'] ) && strpos( $file['body'], $info['constant'] ) ) {
+							if ( ! is_wp_error( $file ) && isset( $file['body'] ) && strpos( $file['body'], $info['constant'] ) && is_writable( WP_CONTENT_DIR . $info['destination'] ) ) {
 								file_put_contents( WP_CONTENT_DIR . $info['destination'], $file['body'] ); // phpcs:ignore WordPress.WP.AlternativeFunctions
 							}
 						}
@@ -1399,8 +1440,43 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 		}
 
 		/**
+		 * Add trigger for record keeping.
+		 *
+		 * @param string $trigger Typically an action but can be manually set in the event of a force purge.
+		 *
+		 * @return void
+		 */
+		protected function add_trigger( $trigger ) {
+			$this->triggers[] = $trigger;
+		}
+
+		/**
+		 * Retrieves the most recent trigger
+		 *
+		 * @return string of the most recent trigger from the collection
+		 */
+		protected function get_trigger() {
+			return end( $this->triggers );
+		}
+
+		/**
+		 * Retrieves all the triggers to send with bundled requests
+		 *
+		 * @param string $include_duplicates Determines if the array should be unique
+		 *
+		 * @return array
+		 */
+		protected function get_triggers( $include_duplicates = false ) {
+			if ( ! $include_duplicates ) {
+				return array_values( array_unique( $this->triggers ) );
+			} else {
+				return $this->triggers;
+			}
+		}
+
+		/**
 		 * Primary function for the UDEV Purge Cache API. Makes non-blocking request for current install cache purges.
-		 * 
+		 *
 		 * Calling this method with *no* parameters triggers a full cache wipe for the domain.
 		 * Calling this method with relative paths to resources will purge just those resources.
 		 *
@@ -1413,25 +1489,35 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 
 			$brand = get_option( 'mm_brand' );
 
-			if ( 
-				$this->use_file_cache() 
-				|| ! in_array( $brand, $this->cloudflare_support )  
+			if ( $this->use_file_cache()
+				|| ! in_array( $brand, $this->cloudflare_support, true )
+				|| false === $this->cloudflare_enabled
 			) {
 				return;
 			}
-			
-			$hosts 		= array( wp_parse_url( home_url(), PHP_URL_HOST ) );
-			$services 	= ! empty( $override_services ) ? $override_services : self::$udev_api_services;
+
+			$throttle_key = md5( wp_json_encode( $resources ) );
+
+			if ( ! $this->force_purge && true === $this->should_throttle( $throttle_key, __METHOD__ ) ) {
+				return;
+			}
+
+			$hosts    = array( wp_parse_url( home_url(), PHP_URL_HOST ) );
+			$services = ! empty( $override_services ) ? $override_services : self::$udev_api_services;
+
+			if ( $services['cf'] && $this->cloudflare_enabled ) {
+				$services['cf'] = $this->cloudflare_enabled;
+			}
 
 			wp_remote_post(
 				$this->udev_cache_api_uri( $services ),
 				array(
-					'blocking' 	=> false,
-					'body'		=> $this->udev_create_request_body( $hosts, $resources ),
-					'compress'	=> true,
-					'headers'	=> array(
+					'blocking'   => false,
+					'body'       => $this->udev_create_request_body( $hosts, $resources ),
+					'compress'   => true,
+					'headers'    => array(
 						'X-EPC-PLUGIN-PURGE' => 1,
-						'content-type'		 => 'application/json',
+						'content-type'       => 'application/json',
 					),
 					'sslverify'  => false,
 					'user-agent' => 'WordPress/' . $wp_version . '; ' . wp_parse_url( home_url(), PHP_URL_HOST ) . '; EPC/v' . EPC_VERSION,
@@ -1442,22 +1528,22 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 		/**
 		 * Build request URL and params for UDEV Purge Cache API.
 		 *
-		 * @param array $services
-		 * @return void
+		 * @param array $services List of services
+		 * @return string URI to use for the udev cache API
 		 */
 		protected function udev_cache_api_uri( $services ) {
 			return trailingslashit( static::$udev_api_root )
 					. trailingslashit( static::$udev_api_version )
 					. static::$udev_api_endpoint
-					. '?' 
+					. '?'
 					. http_build_query( $services );
 		}
 
 		/**
 		 * Take hosts (and perhaps specific resources) to purge and encode JSON for request body.
 		 *
-		 * @param array $hosts
-		 * @param array $resources
+		 * @param array $hosts List of hosts
+		 * @param array $resources List of resources
 		 * @return string|false
 		 */
 		protected function udev_create_request_body( $hosts, $resources ) {
@@ -1467,6 +1553,8 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 				$request['assets'] = array_values( array_unique( array_filter( $resources ) ) );
 			}
 
+			$request['triggers'] = $this->triggers;
+
 			return wp_json_encode( $request );
 		}
 
@@ -1474,15 +1562,13 @@ if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
 		 * Takes full URI and adds to $this->udev_purge_buffer. Typically fires in $this->purge_request().
 		 * Note that $this->purge_all() presets an empty array, which denotes a full domain purge.
 		 *
-		 * @param string $uri
+		 * @param string $uri URI to add to udev purge buffer
 		 * @return void
 		 */
 		protected function udev_cache_populate_buffer( $uri ) {
-			if ( is_array( $this->udev_purge_buffer ) && empty( $this->udev_purge_buffer ) ) {
-				return true; // purge all
-			} elseif ( is_array( $this->udev_purge_buffer ) ) {
+			if ( is_array( $this->udev_purge_buffer ) && ! empty( $this->udev_purge_buffer ) ) {
 				$this->udev_purge_buffer[] = wp_parse_url( $uri, PHP_URL_PATH );
-			} else {
+			} elseif ( false === $this->udev_purge_buffer ) {
 				$this->udev_purge_buffer = array( wp_parse_url( $uri, PHP_URL_PATH ) );
 			}
 		}

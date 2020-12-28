@@ -2,10 +2,22 @@
 <article <?php post_class( 'fl-post' ); ?> id="fl-post-<?php the_ID(); ?>" itemscope="itemscope" itemtype="http://schema.org/CreativeWork">
 
 	<?php if ( FLTheme::show_post_header() ) : ?>
-	<header class="fl-post-header">
-		<h1 class="fl-post-title" itemprop="headline"><?php the_title(); ?></h1>
-		<?php edit_post_link( _x( 'Edit', 'Edit page link text.', 'fl-automator' ) ); ?>
-	</header><!-- .fl-post-header -->
+
+	<?php
+	$this_page = get_the_ID();
+	$pages_id = get_field( 'custom_header_title_section', 'option' );
+	if( !is_array( $pages_id ) )
+	$pages_id = explode( ',', $pages_id );
+
+	if( !in_array( $this_page, $pages_id ) ){
+		?>
+		<header class="fl-post-header">
+			<h1 class="fl-post-title" itemprop="headline"><?php the_title(); ?></h1>
+			<?php edit_post_link( _x( 'Edit', 'Edit page link text.', 'fl-automator' ) ); ?>
+		</header><!-- .fl-post-header -->
+		<?php
+	}
+	?>
 	<?php endif; ?>
 	<?php do_action( 'fl_before_post_content' ); ?>
 	<div class="fl-post-content clearfix" itemprop="text">

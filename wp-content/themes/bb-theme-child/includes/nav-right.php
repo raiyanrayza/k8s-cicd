@@ -1,12 +1,6 @@
 <header class="fl-page-header fl-page-header-primary<?php FLTheme::header_classes(); ?>"<?php FLTheme::header_data_attrs(); ?><?php FLTheme::print_schema( ' itemscope="itemscope" itemtype="https://schema.org/WPHeader"' ); ?>  role="banner">
 	<div class="fl-page-header-wrap">
 		<div class="fl-page-header-container <?php FLLayout::container_class(); ?>">
-        
-        	<div class="head_center">
-            	<div class="head_center_inn">
-            	<a class="menu_danger" href="https://www.avhero.app/register" target="_blank"> I need a hero! </a>
-            	</div>
-            </div>
 			<div class="fl-page-header-row <?php FLLayout::row_class(); ?>">
 				<div class="<?php FLLayout::col_classes( array( 'sm' => 12, 'md' => 2 ) ); // @codingStandardsIgnoreLine ?> fl-page-header-logo-col">
 					<div class="fl-page-header-logo"<?php echo FLTheme::print_schema( ' itemscope="itemscope" itemtype="https://schema.org/Organization"' ); ?>>
@@ -21,17 +15,83 @@
 								<span><?php FLTheme::nav_toggle_text(); ?></span>
 							</button>
 							<div class="fl-page-nav-collapse collapse navbar-collapse">
-								<?php
-
+								<?php								
 								FLTheme::nav_search();
+								$page_for = get_field( 'visible_for_', get_the_ID() );
+								
+								if(!is_array($page_for))
+									$page_for = explode(', ', $page_for);
+								
+								if( !is_user_logged_in() ){
+									if( !in_array( 'patients', $page_for ) ){
+										
+										if(is_page(995) && !is_user_logged_in()){
+										}else{
+											wp_nav_menu(array(
+										    	'menu'              => 2,
+												//'theme_location' => 'header',
+												'items_wrap'     => '<ul id="%1$s" class="nav navbar-nav navbar-right %2$s">%3$s</ul>',
+												'container'      => false,
+												'fallback_cb'    => 'FLTheme::nav_menu_fallback',
+												'menu_class'     => 'menu fl-theme-menu',
+											));
+										}
+									}else{
+										wp_nav_menu(array(
+									    	'menu'              => 12,
+											//'theme_location' => 'header',
+											'items_wrap'     => '<ul id="%1$s" class="nav navbar-nav navbar-right %2$s">%3$s</ul>',
+											'container'      => false,
+											'fallback_cb'    => 'FLTheme::nav_menu_fallback',
+											'menu_class'     => 'menu fl-theme-menu',
+										));
+									}
+								} else if( !in_array( 'patients', $page_for ) || in_array( 'professionals', $page_for ) ) {
+								    wp_nav_menu(array(
+								    	'menu'              => 2,
+										//'theme_location' => 'header',
+										'items_wrap'     => '<ul id="%1$s" class="nav navbar-nav navbar-right %2$s">%3$s</ul>',
+										'container'      => false,
+										'fallback_cb'    => 'FLTheme::nav_menu_fallback',
+										'menu_class'     => 'menu fl-theme-menu',
+									));
+								} else {
+								    wp_nav_menu(array(
+								    	'menu'              => 12,
+										//'theme_location' => 'header',
+										'items_wrap'     => '<ul id="%1$s" class="nav navbar-nav navbar-right %2$s">%3$s</ul>',
+										'container'      => false,
+										'fallback_cb'    => 'FLTheme::nav_menu_fallback',
+										'menu_class'     => 'menu fl-theme-menu',
+									));
+								}
 
-								wp_nav_menu(array(
+								/*if ( is_user_logged_in() ) {
+								    wp_nav_menu(array(
+								    	'menu'              => 2,
+										//'theme_location' => 'header',
+										'items_wrap'     => '<ul id="%1$s" class="nav navbar-nav navbar-right %2$s">%3$s</ul>',
+										'container'      => false,
+										'fallback_cb'    => 'FLTheme::nav_menu_fallback',
+										'menu_class'     => 'menu fl-theme-menu',
+									));
+								} else {
+								    wp_nav_menu(array(
+								    	'menu'              => 12,
+										//'theme_location' => 'header',
+										'items_wrap'     => '<ul id="%1$s" class="nav navbar-nav navbar-right %2$s">%3$s</ul>',
+										'container'      => false,
+										'fallback_cb'    => 'FLTheme::nav_menu_fallback',
+										'menu_class'     => 'menu fl-theme-menu',
+									));
+								}*/
+								/*wp_nav_menu(array(
 									'theme_location' => 'header',
 									'items_wrap'     => '<ul id="%1$s" class="nav navbar-nav navbar-right %2$s">%3$s</ul>',
 									'container'      => false,
 									'fallback_cb'    => 'FLTheme::nav_menu_fallback',
 									'menu_class'     => 'menu fl-theme-menu',
-								));
+								));*/
 
 								?>
 							</div>

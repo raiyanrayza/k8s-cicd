@@ -1,0 +1,155 @@
+/* admin users */
+.main_div {
+	float: left;
+	width: 100%;
+	padding: 20px;
+	border: solid 1px #e7e7e7;
+	margin-top: 10px;
+}
+.show_form_div h3 {
+	float: left;
+	width: 100%;
+	margin: 0 0 15px;
+	border-bottom: double 4px #e7e7e7;
+	padding-bottom: 10px;
+	font-size: 20px;
+}
+.show_form_div .form-control {
+	height: 48px;
+	padding: 9px 12px !important;
+}
+.entry-form .form-group .button {
+	padding: 3px 15px;
+	font-size: 16px;
+	width: 100px;
+	line-height: 30px;
+}
+.result_tables form input {
+	float: right;
+	border: solid 1px #337ab7;
+	color: #337ab7;
+	background: #fff;
+	padding: 7px 15px;
+	border-radius: 4px;
+}
+.result_tables form input:hover,
+.result_tables form input:focus {
+	border: solid 1px #202125;
+	color: #202125;
+}
+.result_tables form {
+	float: left;
+	width: 100%;
+	margin-bottom: 10px;
+}
+.result_tables table {
+	float: left;
+	width: 100%;
+	border: solid 1px #e7e7e7;
+	margin-top: 10px;
+}
+.result_tables thead {
+	background: #F1F3F9;
+}
+.result_tables thead th {
+	color: #6A7382 !important;
+	text-transform: capitalize;
+	font-weight: 600;
+}
+.result_tables td, .result_tables th{
+	padding: 15px;
+	font-weight: 400;
+	font-size: 14px;
+	text-align: center;
+	color: #172B4D;
+}
+.result_tables tr:nth-child(2n) {
+	background-color: #F7FAFC;
+	border-top: solid 1px #e7e7e7;
+	border-bottom: solid 1px #e7e7e7;
+}
+.result_tables tbody tr:hover {
+	background-color: #F1F3F9;
+	transition: background-color 0.6s ease 0s;
+} 
+.result_tables p {
+	float: left;
+	width: 100%;
+	text-align: right;
+	margin: 8px 0 0;
+	font-style: italic;
+}
+
+#support-pagination {
+	float: right;
+	margin-top: 15px;
+}
+.page-numbers {
+	float: right;
+	width: 100%;
+	text-align: right;
+	padding: 0;
+	margin: 0;
+}
+.page-numbers li {
+	float: left;
+	margin-left: 8px;
+}
+#support-pagination .page-numbers .page-numbers.current {
+	background: #5A6C77;
+	color: #fff;
+	border: none;
+	text-decoration: none !important;
+}
+#support-pagination .page-numbers li .page-numbers.current:hover {
+	background: #7796A8;
+	text-decoration: none !important;
+}
+#support-pagination .page-numbers li span.page-numbers,
+#support-pagination .page-numbers li a.page-numbers {
+	background: #7796A8;
+	color: #fff;
+	border: none;
+	float: right;
+    padding: 10px;
+	width: 40px;
+	text-align: center;
+	border-radius: 4px;
+	text-decoration: none !important;
+}
+#support-pagination .page-numbers li span.page-numbers:hover,
+#support-pagination .page-numbers li a.page-numbers:hover {
+	background: #5A6C77;
+	text-decoration: none !important;
+}
+
+#support-pagination .page-numbers li span.page-numbers.prev, #support-pagination .page-numbers li a.page-numbers.prev {
+	width: 87px;
+}
+#support-pagination .page-numbers li span.page-numbers.next, #support-pagination .page-numbers li a.page-numbers.next {
+	width: 61px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

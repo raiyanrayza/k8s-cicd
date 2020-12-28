@@ -1,0 +1,13 @@
+<svg id="My_Account" data-name="My Account" xmlns="http://www.w3.org/2000/svg" width="772" height="523" viewBox="0 0 32 32">
+  <path id="Path_23" data-name="Path 23" d="M26,32H6a6,6,0,0,1-6-6V6A6,6,0,0,1,6,0H26a6,6,0,0,1,6,6V26A6,6,0,0,1,26,32Z" fill="#ffe6e2"/>
+  <g id="Group_4" data-name="Group 4">
+    <path id="Path_24" data-name="Path 24" d="M22.833,8H9.167A1.168,1.168,0,0,0,8,9.167v1.667A1.167,1.167,0,0,0,9.167,12H22.834A1.167,1.167,0,0,0,24,10.833V9.167A1.168,1.168,0,0,0,22.833,8Z" fill="#e62522"/>
+    <path id="Path_25" data-name="Path 25" d="M9.167,24H17.5a1.173,1.173,0,0,0,1.167-1.167V14.5A1.173,1.173,0,0,0,17.5,13.333H9.167A1.173,1.173,0,0,0,8,14.5v8.333A1.173,1.173,0,0,0,9.167,24Zm4.166-8a1,1,0,1,1-1,1A1,1,0,0,1,13.333,16Zm-2,3.92a1.332,1.332,0,0,1,1.4-1.253h1.2a1.332,1.332,0,0,1,1.4,1.253v.247a.5.5,0,0,1-.5.5h-3a.5.5,0,0,1-.5-.5Z" fill="#e62522"/>
+    <circle id="Ellipse_9" data-name="Ellipse 9" cx="2" cy="2" r="2" transform="translate(20 19.667)" fill="#e62522"/>
+  </g>
+  <g id="Group_5" data-name="Group 5">
+    <path id="Path_26" data-name="Path 26" d="M23.5,15.333h-3a.5.5,0,0,0,0,1h3a.5.5,0,0,0,0-1Z" fill="#ffa8a7"/>
+    <path id="Path_27" data-name="Path 27" d="M23.5,13.333h-3a.5.5,0,0,0,0,1h3a.5.5,0,0,0,0-1Z" fill="#ffa8a7"/>
+    <path id="Path_28" data-name="Path 28" d="M23.5,17.333h-3a.5.5,0,0,0,0,1h3a.5.5,0,0,0,0-1Z" fill="#ffa8a7"/>
+  </g>
+</svg>

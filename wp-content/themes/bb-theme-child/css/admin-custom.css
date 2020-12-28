@@ -1,0 +1,193 @@
+.toplevel_page_mailpoet-newsletters .filter-links li:nth-child(2), .toplevel_page_mailpoet-newsletters .filter-links li:nth-child(3), .toplevel_page_mailpoet-newsletters .filter-links li:nth-child(4) {
+	display: none;
+}
+.dashicons.spin {
+	animation: dashicons-spin 1s infinite;
+	animation-timing-function: linear;
+}
+ @keyframes dashicons-spin {
+ 0% {
+ transform: rotate( 0deg );
+}
+ 100% {
+ transform: rotate( 360deg );
+}
+}
+.payment_transaction_load{
+	position: absolute;
+    margin-left: 5px;
+    display:none;
+}
+.refund_pro_vel_message .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+
+.refund_pro_vel_message .alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.refund_pro_vel_message .alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+#t_payment_table tr:nth-child(odd) td {
+	background: #EBEBEB;
+}
+table#t_payment_table {
+	margin-top: 15px;
+	float: left;
+}
+#earnings_report_month tr:hover td {
+	background: #4E5066;
+	color: #fff;
+}
+#earnings_report_month tr:hover td a {
+	color: #fff;
+}
+#t_payment_table td, #t_payment_table td {
+	background: #FFFFFF;
+	text-align: left;
+	vertical-align: middle;
+	font-weight: 300;
+	font-size: 14px;
+	border-right: 1px solid #C1C3D1;
+	letter-spacing: 0.5px;
+}
+#t_payment_table thead th, #t_payment_table thead td {
+	color: #fff;
+	background-color: #1c2e3b;
+	letter-spacing: 0.7px;
+}
+.earnings_order_main {
+	float: left;
+	width: 95%;
+	background: #fff;
+	padding: 2%;
+}
+#t_payment_table_length {
+	float: left;
+	margin-bottom: 15px;
+	margin-top: 10px;
+}
+#t_payment_table_filter {
+	float: right;
+	margin-bottom: 15px;
+	margin-top: 10px;
+}
+#t_payment_table .sendEmailRequest {
+	background: #7796A8;
+	border: none;
+	box-shadow: none;
+	padding: 5px 15px;
+	font-size: 14px;
+	color: #fff;
+	text-align: center;
+	border-radius: 4px;
+	cursor: pointer;
+	font-family: "Work Sans", "HelveticaNeue", "Helvetica Neue", sans-serif;
+	font-weight: 500;
+	display: inline-block;
+	text-decoration: none;
+}
+#t_payment_table .sendEmailRequest:hover, .t_payment_table .sendEmailRequest:focus {
+	background: #5A6C77;
+}
+#t_payment_table_info {
+	float: left;
+	margin-top: 15px;
+}
+#t_payment_table_paginate {
+	float: right;
+	margin-top: 15px;
+}
+#t_payment_table_paginate .paginate_button.current {
+	background: #5A6C77;
+	color: #fff !important;
+	border: none;
+	margin-left: 5px;
+}
+#t_payment_table_paginate .paginate_button.current:hover {
+	background: #7796A8;
+}
+#t_payment_table_paginate .paginate_button {
+	background: #7796A8;
+	color: #fff !important;
+	border: none;
+	margin-left: 5px;
+}
+#t_payment_table_paginate .paginate_button:hover {
+	background: #5A6C77;
+}
+
+.payments_transactions_head h3 {
+	float: left;
+	width: 100%;
+	color: #1c2e3b;
+	border-bottom: double 4px #999;
+	padding-bottom: 10px;
+}
+
+
+.ui-draggable .ui-dialog-titlebar {
+	cursor: move;
+	color: #6E0309;
+	font-size: 16px;
+}
+.ui-dialog {
+	border-radius: 4px;
+}
+.ui-dialog-content h3 {
+	margin: 0 0 10px;
+	font-size: 14px;
+	font-weight: 600;
+	float: left;
+	width: 100%;
+}
+.ui-dialog-content h3 span.pmc_name {
+	font-weight: 400 !important;
+}
+#card-modal button {
+	background: #fff;
+	color: #6E0309;
+	border: solid 1px #6E0309;
+	float: left;
+	padding: 3px 15px 5px;
+	border-radius: 4px;
+	font-size: 14px;
+	margin-top: 10px;
+	cursor: pointer !important;
+}
+#card-modal button:hover,
+#card-modal button:focus {
+	background: #6E0309;
+	color: #fff;
+}
+.ui-button.ui-dialog-titlebar-close {
+	color: #6E0309 !important;
+}
+.ui-button.ui-dialog-titlebar-close:hover,
+.ui-button.ui-dialog-titlebar-close:focus {
+	color: #1c2e3b !important;
+	box-shadow: none !important;
+	border: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+

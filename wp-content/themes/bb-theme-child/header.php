@@ -66,13 +66,14 @@ FLTheme::head();
 
 ?>
 
-
-<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/css/custom/custom.css" />
+<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/css/custom.css" />
 </head>
-
-
-
-
+<div class="preloader preloader-deactivate">
+  <div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
+  </div>
+</div>
 
 <body <?php body_class(); ?> itemscope="itemscope" itemtype="http://schema.org/WebPage">
 

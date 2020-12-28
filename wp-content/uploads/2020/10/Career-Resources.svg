@@ -1,0 +1,11 @@
+<svg id="Career_Resources" data-name="Career Resources" xmlns="http://www.w3.org/2000/svg" width="772" height="523" viewBox="0 0 32 32">
+  <path id="Path_1" data-name="Path 1" d="M26,32H6a6,6,0,0,1-6-6V6A6,6,0,0,1,6,0H26a6,6,0,0,1,6,6V26A6,6,0,0,1,26,32Z" fill="#ffe6e2"/>
+  <path id="Path_2" data-name="Path 2" d="M15.167,8a.487.487,0,0,0-.447.28.5.5,0,0,0,.047.527l1.94,2.527-1.94,2.527a.505.505,0,0,0-.047.527.487.487,0,0,0,.447.28H22V8.5a1.526,1.526,0,0,1,.087-.5Z" fill="#ffa8a7"/>
+  <g id="Group_1" data-name="Group 1">
+    <circle id="Ellipse_1" data-name="Ellipse 1" cx="2" cy="2" r="2" transform="translate(9.667 15.667)" fill="#e62522"/>
+    <circle id="Ellipse_2" data-name="Ellipse 2" cx="1.333" cy="1.333" r="1.333" transform="translate(18 18)" fill="#e62522"/>
+    <path id="Path_3" data-name="Path 3" d="M20.167,21.333H18.5a1.835,1.835,0,0,0-1.833,1.833V23.5a.5.5,0,0,0,.5.5H21.5a.5.5,0,0,0,.5-.5v-.333A1.836,1.836,0,0,0,20.167,21.333Z" fill="#e62522"/>
+    <path id="Path_4" data-name="Path 4" d="M13.5,20.667H9.833A1.835,1.835,0,0,0,8,22.5v1a.5.5,0,0,0,.5.5h6.333a.5.5,0,0,0,.5-.5v-1A1.835,1.835,0,0,0,13.5,20.667Z" fill="#e62522"/>
+  </g>
+  <path id="Path_5" data-name="Path 5" d="M23.5,24a.5.5,0,0,1-.5-.5V8.5a.5.5,0,0,1,1,0v15A.5.5,0,0,1,23.5,24Z" fill="#ffa8a7"/>
+</svg>
