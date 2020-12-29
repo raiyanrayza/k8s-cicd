@@ -6,22 +6,48 @@ metadata:
 data:
    password:  Z2FnYW45NA==
 type: Opaque
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: wordpress
-  namespace: 24-wp
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:686878367233:certificate/4d0fa014-9277-4e3d-91cd-29aa00705710
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+    service.beta.kubernetes.io/aws-load-balancer-redirect-http-to-https: "true"
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "v1/metrics"
+    prometheus.io/port: "8080"
   labels:
     app: wordpress
+  name: wordpress
+  namespace: paces-wp
 spec:
+  type: LoadBalancer
   ports:
-    - port: 80
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: https
+    port: 443
+    targetPort: 80
   selector:
     app: wordpress
-    tier: frontend
-  type: LoadBalancer
+---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: wordpress
+#   namespace: 24-wp
+#   labels:
+#     app: wordpress
+# spec:
+#   ports:
+#     - port: 80
+#   selector:
+#     app: wordpress
+#     tier: frontend
+#   type: LoadBalancer
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
